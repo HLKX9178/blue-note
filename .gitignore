@@ -62,3 +62,6 @@ skills-lock.json
 AGENT.md
 AGENTS.md
 CLAUDE.md
+
+### Qodana local scan output (regenerated per run, not versioned) ###
+qodana.sarif.json
