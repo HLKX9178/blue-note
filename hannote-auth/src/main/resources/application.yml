@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: hannote-auth
+  profiles:
+    active: dev
