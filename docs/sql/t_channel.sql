@@ -1,5 +1,5 @@
--- hannote 频道表（PostgreSQL）
--- 在数据库 hannote 中执行
+-- bluenote 频道表（PostgreSQL）
+-- 在数据库 bluenote 中执行
 
 CREATE TABLE IF NOT EXISTS t_channel (
     id           BIGINT       NOT NULL PRIMARY KEY,

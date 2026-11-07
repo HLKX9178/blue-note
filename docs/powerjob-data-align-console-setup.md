@@ -1,6 +1,6 @@
-# PowerJob 控制台配置指南 —— hannote-data-align
+# PowerJob 控制台配置指南 —— bluenote-data-align
 
-数据对齐服务（`hannote-data-align`）的定时任务由 **PowerJob** 调度。代码侧只提供处理器类，
+数据对齐服务（`bluenote-data-align`）的定时任务由 **PowerJob** 调度。代码侧只提供处理器类，
 **应用注册**与 **10 个任务** 需你在 powerjob-server 控制台（默认 http://localhost:7700 ）创建。
 
 > 前置：powerjob-server 已部署（本项目锁定 worker 版本 **5.1.2**，需与 server 版本一致）。
@@ -14,41 +14,41 @@
 
 控制台 → 顶部「应用管理」→ 新建应用：
 
-- **应用名称（appName）**：`hannote-data-align` —— 必须与 worker 配置 `powerjob.worker.app-name` 一致。
+- **应用名称（appName）**：`bluenote-data-align` —— 必须与 worker 配置 `powerjob.worker.app-name` 一致。
 - **应用密码**：自定义（用于控制台登录该应用，worker 5.1.2 侧无需填密码，仅靠 appName 关联）。
 
-保存后，回到 `hannote-data-align` 的 `application-dev.yml`，确认：
+保存后，回到 `bluenote-data-align` 的 `application-dev.yml`，确认：
 
 ```yaml
 powerjob:
   worker:
     server-address: 127.0.0.1:7700   # 你的 powerjob-server 地址（HTTP 端口默认 7700）
-    app-name: hannote-data-align     # = 上面注册的应用名
+    app-name: bluenote-data-align     # = 上面注册的应用名
     port: 27777
     store-strategy: disk
 ```
 
-启动 `hannote-data-align`，控制台该应用下应能看到在线 worker（27777）。
+启动 `bluenote-data-align`，控制台该应用下应能看到在线 worker（27777）。
 
 ---
 
 ## 二、创建 10 个任务
 
-控制台 → 切换到 `hannote-data-align` 应用 → 「任务管理」→ 新建任务。每个任务的关键字段如下
+控制台 → 切换到 `bluenote-data-align` 应用 → 「任务管理」→ 新建任务。每个任务的关键字段如下
 （未列出的字段用默认值即可）：
 
 | 任务名称 | 处理器类型 | 处理器信息（全限定类名） | 执行类型 | 定时类型 | 定时信息（CRON） |
 |---|---|---|---|---|---|
-| 创建日增量表 | 内置Java处理器 | `com.hanserwei.dataalign.processor.CreateDailyTableProcessor` | 单机 | CRON | `0 0 23 * * ?` |
-| 删除历史日增量表 | 内置Java处理器 | `com.hanserwei.dataalign.processor.DeleteExpiredTableProcessor` | 单机 | CRON | `0 30 23 * * ?` |
-| 对齐-关注数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.FollowingCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-粉丝数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.FansCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-笔记点赞数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.NoteLikeCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-笔记收藏数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.NoteCollectCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-用户获赞数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.UserLikeCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-用户获藏数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.UserCollectCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-发布笔记数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.NotePublishCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
-| 对齐-笔记评论数 | 内置Java处理器 | `com.hanserwei.dataalign.processor.NoteCommentCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 创建日增量表 | 内置Java处理器 | `com.han.dataalign.processor.CreateDailyTableProcessor` | 单机 | CRON | `0 0 23 * * ?` |
+| 删除历史日增量表 | 内置Java处理器 | `com.han.dataalign.processor.DeleteExpiredTableProcessor` | 单机 | CRON | `0 30 23 * * ?` |
+| 对齐-关注数 | 内置Java处理器 | `com.han.dataalign.processor.FollowingCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-粉丝数 | 内置Java处理器 | `com.han.dataalign.processor.FansCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-笔记点赞数 | 内置Java处理器 | `com.han.dataalign.processor.NoteLikeCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-笔记收藏数 | 内置Java处理器 | `com.han.dataalign.processor.NoteCollectCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-用户获赞数 | 内置Java处理器 | `com.han.dataalign.processor.UserLikeCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-用户获藏数 | 内置Java处理器 | `com.han.dataalign.processor.UserCollectCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-发布笔记数 | 内置Java处理器 | `com.han.dataalign.processor.NotePublishCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
+| 对齐-笔记评论数 | 内置Java处理器 | `com.han.dataalign.processor.NoteCommentCountAlignProcessor` | MapReduce | CRON | `0 0 3 * * ?` |
 
 字段说明：
 
@@ -71,7 +71,7 @@ powerjob:
    - 关注/取关：`POST /relation/follow`、`/relation/unfollow` → `CountFollowingTopic`
    - 发布/删除笔记：`POST /note/publish`、`/note/delete` → `NoteOperateTopic`
    - 发布/删除评论：`POST /comment/publish`、`/comment/delete` → `CommentCountChangedTopic`
-   → 观察 `hannote-data-align` 日志，变更 ID 落入对应分片临时表（`t_data_align_*_temp_{当日}_{分片}`）。
+   → 观察 `bluenote-data-align` 日志，变更 ID 落入对应分片临时表（`t_data_align_*_temp_{当日}_{分片}`）。
 3. 手动「运行一次」任一**对齐**任务（注意其对齐的是**昨日**日期后缀的表）→ 查看在线日志「共对齐 N 条」，
    核对 `t_user_count`/`t_note_count` 已回写为源头真实值，且若对应 Redis Hash 存在则 Field 同步更新。
 4. 手动「运行一次」**删除历史日增量表** → 近一个月（不含今日）的临时表被清理。
@@ -91,7 +91,7 @@ PowerJob 5.1.2 开源版控制台的「导入」只支持**一次粘贴一个任
 
 复用你在控制台里的登录态，循环调用 `/job/save` 批量创建。脚本见 `docs/powerjob-data-align-jobs-import.js`。
 
-1. 浏览器打开控制台并登录，**左上角把当前应用切到 `hannote-data-align`**（脚本读取当前 `appId`）。
+1. 浏览器打开控制台并登录，**左上角把当前应用切到 `bluenote-data-align`**（脚本读取当前 `appId`）。
 2. F12 → **Console** 面板，整段粘贴 `powerjob-data-align-jobs-import.js` 的内容，回车。
 3. 逐条打印 `✅ 已创建 / ❌ 失败`；刷新「任务管理」页即可看到 10 个任务（默认已启用）。
 
@@ -102,7 +102,7 @@ PowerJob 5.1.2 开源版控制台的「导入」只支持**一次粘贴一个任
 
 任务管理页 → 「导入」→ 把下面某一段 JSON 粘进文本框 → 确定。共 10 段，重复 10 次。
 
-> **务必先把每段里的 `"appId": 0` 改成你的 `hannote-data-align` 应用的数字 ID。**
+> **务必先把每段里的 `"appId": 0` 改成你的 `bluenote-data-align` 应用的数字 ID。**
 > 取 ID：控制台任意页 F12 → Console 执行 `localStorage.getItem('Power_appId')`，把结果填进去。
 
 <details>
@@ -110,34 +110,34 @@ PowerJob 5.1.2 开源版控制台的「导入」只支持**一次粘贴一个任
 
 ```jsonc
 // 1. 创建日增量表（单机，23:00）
-{"appId":0,"jobName":"数据对齐-创建日增量表","jobDescription":"每日创建次日的 8×shards 张临时表","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.CreateDailyTableProcessor","executeType":"STANDALONE","timeExpressionType":"CRON","timeExpression":"0 0 23 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-创建日增量表","jobDescription":"每日创建次日的 8×shards 张临时表","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.CreateDailyTableProcessor","executeType":"STANDALONE","timeExpressionType":"CRON","timeExpression":"0 0 23 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 2. 删除历史日增量表（单机，23:30）
-{"appId":0,"jobName":"数据对齐-删除历史日增量表","jobDescription":"清理上个月（不含今日）的历史临时表","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.DeleteExpiredTableProcessor","executeType":"STANDALONE","timeExpressionType":"CRON","timeExpression":"0 30 23 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-删除历史日增量表","jobDescription":"清理上个月（不含今日）的历史临时表","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.DeleteExpiredTableProcessor","executeType":"STANDALONE","timeExpressionType":"CRON","timeExpression":"0 30 23 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 3. 对齐-关注数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-关注数","jobDescription":"按分片重算 t_user_count.following_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.FollowingCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-关注数","jobDescription":"按分片重算 t_user_count.following_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.FollowingCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 4. 对齐-粉丝数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-粉丝数","jobDescription":"按分片重算 t_user_count.fans_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.FansCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-粉丝数","jobDescription":"按分片重算 t_user_count.fans_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.FansCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 5. 对齐-笔记点赞数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-笔记点赞数","jobDescription":"按分片重算 t_note_count.like_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.NoteLikeCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-笔记点赞数","jobDescription":"按分片重算 t_note_count.like_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.NoteLikeCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 6. 对齐-笔记收藏数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-笔记收藏数","jobDescription":"按分片重算 t_note_count.collect_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.NoteCollectCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-笔记收藏数","jobDescription":"按分片重算 t_note_count.collect_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.NoteCollectCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 7. 对齐-用户获赞数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-用户获赞数","jobDescription":"按分片重算 t_user_count.like_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.UserLikeCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-用户获赞数","jobDescription":"按分片重算 t_user_count.like_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.UserLikeCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 8. 对齐-用户获藏数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-用户获藏数","jobDescription":"按分片重算 t_user_count.collect_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.UserCollectCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-用户获藏数","jobDescription":"按分片重算 t_user_count.collect_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.UserCollectCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 9. 对齐-发布笔记数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-发布笔记数","jobDescription":"按分片重算 t_user_count.note_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.NotePublishCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-发布笔记数","jobDescription":"按分片重算 t_user_count.note_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.NotePublishCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 
 // 10. 对齐-笔记评论数（MapReduce，03:00）
-{"appId":0,"jobName":"数据对齐-笔记评论数","jobDescription":"按分片重算 t_note_count.comment_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.hanserwei.dataalign.processor.NoteCommentCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
+{"appId":0,"jobName":"数据对齐-笔记评论数","jobDescription":"按分片重算 t_note_count.comment_total 并同步 Redis","processorType":"BUILT_IN","processorInfo":"com.han.dataalign.processor.NoteCommentCountAlignProcessor","executeType":"MAP_REDUCE","timeExpressionType":"CRON","timeExpression":"0 0 3 * * ?","dispatchStrategy":"HEALTH_FIRST","maxInstanceNum":1,"concurrency":5,"instanceTimeLimit":0,"instanceRetryNum":0,"taskRetryNum":0,"maxWorkerCount":0,"minCpuCores":0,"minMemorySpace":0,"minDiskSpace":0,"enable":true}
 ```
 
 > 粘贴时**每次只贴一个 `{...}` 对象**（原生导入不吃数组、也不吃 `//` 注释）。字段含义见第二节表格。

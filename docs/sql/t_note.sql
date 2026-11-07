@@ -1,5 +1,5 @@
--- hannote 笔记表（PostgreSQL）
--- 在数据库 hannote 中执行
+-- bluenote 笔记表（PostgreSQL）
+-- 在数据库 bluenote 中执行
 
 CREATE TABLE IF NOT EXISTS t_note (
     id                BIGINT        NOT NULL PRIMARY KEY,

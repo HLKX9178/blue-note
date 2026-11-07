@@ -1,7 +1,7 @@
 -- ============================================================================
 -- 数据对齐服务日增量临时表（PostgreSQL）—— 参考模板
 -- ----------------------------------------------------------------------------
--- 说明：这些表由 hannote-data-align 的 CreateDailyTableProcessor 定时任务
+-- 说明：这些表由 bluenote-data-align 的 CreateDailyTableProcessor 定时任务
 --      「动态创建」，表名后缀 = {yyyyMMdd}_{分片序号}（如 _20260711_0）。
 --      本文件仅作结构参考/评审用，正常运行无需手动执行。
 --      如需手动建当日表联调，把 ${suffix} 替换为具体的「日期_分片序号」即可。
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS t_data_align_note_comment_count_temp_${suffix} (
 );
 
 -- ----------------------------------------------------------------------------
--- 对齐任务回写的目标表（已存在，由 hannote-count 属主维护，此处仅备注）：
+-- 对齐任务回写的目标表（已存在，由 bluenote-count 属主维护，此处仅备注）：
 --   t_user_count(following_total, fans_total, like_total, collect_total, note_total)
 --   t_note_count(like_total, collect_total, comment_total)
 -- ============================================================================

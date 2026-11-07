@@ -1,4 +1,4 @@
--- hannote 角色权限关联表（PostgreSQL）
+-- bluenote 角色权限关联表（PostgreSQL）
 
 CREATE TABLE IF NOT EXISTS t_role_permission_rel (
     id             BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

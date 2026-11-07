@@ -1,6 +1,6 @@
--- hannote 评论表（PostgreSQL）
--- 在数据库 hannote 中执行
--- 属主：hannote-comment 服务（CommentDO）
+-- bluenote 评论表（PostgreSQL）
+-- 在数据库 bluenote 中执行
+-- 属主：bluenote-comment 服务（CommentDO）
 -- 主键 id 由 CoSId 预生成写入（非自增）
 CREATE TABLE IF NOT EXISTS t_comment (
     id                BIGINT       NOT NULL PRIMARY KEY,

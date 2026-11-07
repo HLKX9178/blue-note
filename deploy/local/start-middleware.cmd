@@ -15,7 +15,7 @@ docker compose -f podman-compose.yml ps
 echo.
 echo Nacos console : http://127.0.0.1:18080
 echo Nacos server  : 127.0.0.1:8848
-echo PostgreSQL    : 127.0.0.1:5432  (hannote/hannote)
+echo PostgreSQL    : 127.0.0.1:5432  (bluenote/bluenote)
 echo RocketMQ      : 127.0.0.1:9876
 echo.
 echo Next: run init-db.cmd ONCE (empty volume only), then start-services.cmd

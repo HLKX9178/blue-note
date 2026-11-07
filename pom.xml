@@ -4,33 +4,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.hanserwei</groupId>
-    <artifactId>hannote</artifactId>
+    <groupId>com.han</groupId>
+    <artifactId>bluenote</artifactId>
     <version>${revision}</version>
 
     <!-- 项目名称 -->
     <name>${project.artifactId}</name>
     <!-- 项目描述 -->
-    <description>hannote，基于 Spring Cloud Alibaba 的微服务架构练习项目。作者：Hanserwei</description>
+    <description>bluenote，基于 Spring Cloud Alibaba 的微服务架构练习项目。作者：Han</description>
 
     <!-- 多模块项目需要配置打包方式为 pom -->
     <packaging>pom</packaging>
 
     <!-- 子模块管理 -->
     <modules>
-        <module>hannote-framework</module>
-        <module>hannote-auth</module>
-        <module>hannote-gateway</module>
-        <module>hannote-oss</module>
-        <module>hannote-user</module>
-        <module>hannote-kv</module>
-        <module>hannote-distributed-id-generator</module>
-        <module>hannote-note</module>
-        <module>hannote-user-relation</module>
-        <module>hannote-count</module>
-        <module>hannote-data-align</module>
-        <module>hannote-search</module>
-        <module>hannote-comment</module>
+        <module>bluenote-framework</module>
+        <module>bluenote-auth</module>
+        <module>bluenote-gateway</module>
+        <module>bluenote-oss</module>
+        <module>bluenote-user</module>
+        <module>bluenote-kv</module>
+        <module>bluenote-distributed-id-generator</module>
+        <module>bluenote-note</module>
+        <module>bluenote-user-relation</module>
+        <module>bluenote-count</module>
+        <module>bluenote-data-align</module>
+        <module>bluenote-search</module>
+        <module>bluenote-comment</module>
     </modules>
 
     <properties>
@@ -246,40 +246,40 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- hannote 内部模块 -->
+            <!-- bluenote 内部模块 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-common</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-common</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-spring-boot-starter-biz-operationlog</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-spring-boot-starter-biz-operationlog</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-spring-boot-starter-biz-context</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-spring-boot-starter-biz-context</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-spring-boot-starter-rpc</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-spring-boot-starter-rpc</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-oss-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-oss-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-user-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-user-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-kv-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-kv-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- Caffeine 本地缓存 -->
@@ -290,32 +290,32 @@
             </dependency>
             <!-- 分布式 ID 生成服务对外契约 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-distributed-id-generator-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-distributed-id-generator-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 笔记服务对外契约 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-note-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-note-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 用户关系服务对外契约 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-user-relation-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-user-relation-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 计数服务对外契约 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-count-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-count-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 评论服务对外契约 -->
             <dependency>
-                <groupId>com.hanserwei</groupId>
-                <artifactId>hannote-comment-api</artifactId>
+                <groupId>com.han</groupId>
+                <artifactId>bluenote-comment-api</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

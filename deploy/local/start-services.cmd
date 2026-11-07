@@ -15,24 +15,24 @@ if not exist "%JAVA_HOME%\bin\java.exe" (
   exit /b 1
 )
 
-echo [1/5] hannote-distributed-id-generator  :8084
-start "hannote-id" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "hannote-distributed-id-generator\hannote-distributed-id-generator-biz\target\hannote-distributed-id-generator-biz-0.0.1-SNAPSHOT.jar"
+echo [1/5] bluenote-distributed-id-generator  :8084
+start "bluenote-id" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "bluenote-distributed-id-generator\bluenote-distributed-id-generator-biz\target\bluenote-distributed-id-generator-biz-0.0.1-SNAPSHOT.jar"
 timeout /t 20 /nobreak >nul
 
-echo [2/5] hannote-count  :8087
-start "hannote-count" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "hannote-count\hannote-count-biz\target\hannote-count-biz-0.0.1-SNAPSHOT.jar"
+echo [2/5] bluenote-count  :8087
+start "bluenote-count" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "bluenote-count\bluenote-count-biz\target\bluenote-count-biz-0.0.1-SNAPSHOT.jar"
 timeout /t 18 /nobreak >nul
 
-echo [3/5] hannote-user  :8082
-start "hannote-user" cmd /c java -Xms192m -Xmx384m -XX:MaxMetaspaceSize=256m -jar "hannote-user\hannote-user-biz\target\hannote-user-biz-0.0.1-SNAPSHOT.jar"
+echo [3/5] bluenote-user  :8082
+start "bluenote-user" cmd /c java -Xms192m -Xmx384m -XX:MaxMetaspaceSize=256m -jar "bluenote-user\bluenote-user-biz\target\bluenote-user-biz-0.0.1-SNAPSHOT.jar"
 timeout /t 20 /nobreak >nul
 
-echo [4/5] hannote-auth  :8080
-start "hannote-auth" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "hannote-auth\target\hannote-auth-0.0.1-SNAPSHOT.jar"
+echo [4/5] bluenote-auth  :8080
+start "bluenote-auth" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "bluenote-auth\target\bluenote-auth-0.0.1-SNAPSHOT.jar"
 timeout /t 18 /nobreak >nul
 
-echo [5/5] hannote-gateway  :8000
-start "hannote-gateway" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "hannote-gateway\target\hannote-gateway-0.0.1-SNAPSHOT.jar"
+echo [5/5] bluenote-gateway  :8000
+start "bluenote-gateway" cmd /c java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m -jar "bluenote-gateway\target\bluenote-gateway-0.0.1-SNAPSHOT.jar"
 
 echo.
 echo All five services launched. Wait ~20s, then check:

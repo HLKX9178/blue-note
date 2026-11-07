@@ -56,7 +56,7 @@ application-dev.yml
 skills-lock.json
 
 ### Local frontend API test console (intentionally not versioned) ###
-/hannote-test-console/
+/bluenote-test-console/
 
 ### AI agent instructions (local only) ###
 AGENT.md

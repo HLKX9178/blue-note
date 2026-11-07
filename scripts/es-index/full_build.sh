@@ -2,7 +2,7 @@
 #
 # 一次性全量构建 ES 索引）。
 #
-# 思路：note/user/count 三张表同在一个 PostgreSQL 库（hannote），因此用一条 JOIN SQL
+# 思路：note/user/count 三张表同在一个 PostgreSQL 库（bluenote），因此用一条 JOIN SQL
 # 即可取出索引所需全部字段，无需 logstash。流程：
 #   PostgreSQL --(docker psql, 输出 json_agg 数组)--> jq 拼 _bulk NDJSON --> ES /_bulk
 #
@@ -20,7 +20,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 凭据不硬编码进脚本：默认从 note 服务的 application-dev.yml（已 gitignore）解析，
 # 本地存在即开箱即跑；CI 或他机可用下方环境变量覆盖。
-DEV_YML="${DEV_YML:-${SCRIPT_DIR}/../../hannote-note/hannote-note-biz/src/main/resources/application-dev.yml}"
+DEV_YML="${DEV_YML:-${SCRIPT_DIR}/../../bluenote-note/bluenote-note-biz/src/main/resources/application-dev.yml}"
 
 yml_get() { # $1=键名，取 "key: value" 的 value（去引号/注释/空白）
   [ -f "${DEV_YML}" ] || return 0
@@ -37,7 +37,7 @@ YML_DB="$(echo "${JDBC_URL}"   | sed -nE 's#.*/([^/?]+)(\?.*)?$#\1#p')"
 PG_HOST="${PG_HOST:-${YML_HOST:-101.43.61.11}}"
 PG_PORT="${PG_PORT:-${YML_PORT:-5432}}"
 PG_USER="${PG_USER:-$(yml_get username)}"; PG_USER="${PG_USER:-postgres}"
-PG_DB="${PG_DB:-${YML_DB:-hannote}}"
+PG_DB="${PG_DB:-${YML_DB:-bluenote}}"
 PGPASSWORD="${PGPASSWORD:-$(yml_get password)}"
 ES_URL="${ES_URL:-http://192.168.1.117:9200}"
 PG_IMAGE="${PG_IMAGE:-postgres:16-alpine}"
@@ -102,7 +102,7 @@ NOTE_SQL="
 
 # ---------------- 用户索引 ----------------
 USER_SQL="
-  select u.id, u.nickname, u.avatar, u.hannote_id,
+  select u.id, u.nickname, u.avatar, u.bluenote_id,
          coalesce(uc.note_total,0) as note_total,
          coalesce(uc.fans_total,0) as fans_total
   from t_user u

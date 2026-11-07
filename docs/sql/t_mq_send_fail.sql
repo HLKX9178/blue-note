@@ -1,4 +1,4 @@
--- 发送失败的 MQ 兜底表（属主：hannote-comment）
+-- 发送失败的 MQ 兜底表（属主：bluenote-comment）
 -- 评论发布异步发 MQ 多次重试仍失败的消息落此表，由 PowerJob 定时扫表重发，成功后物理删除。
 CREATE TABLE IF NOT EXISTS t_mq_send_fail
 (

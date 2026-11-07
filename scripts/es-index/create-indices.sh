@@ -4,7 +4,7 @@
 #
 # ��注意事项：
 #   - number_of_replicas 设为 0：本地单节点 dev 集群，副本无法分配会导致索引 yellow。
-#   - user 索引字段 xiaohashu_id 重命名为 hannote_id，与本项目命名保持一致。
+#   - user 索引字段 xiaohashu_id 重命名为 bluenote_id，与本项目命名保持一致。
 #   - 分词策略照旧：建倒排索引用 ik_max_word（查全），搜索用 ik_smart（查准），
 #     依赖 ES 已安装 analysis-ik 插件（本环境 analysis-ik 9.4.3 已装）。
 #
@@ -63,7 +63,7 @@ USER_INDEX='{
       "id":         { "type": "long" },
       "nickname":   { "type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart" },
       "avatar":     { "type": "keyword" },
-      "hannote_id": { "type": "keyword" },
+      "bluenote_id": { "type": "keyword" },
       "note_total": { "type": "integer" },
       "fans_total": { "type": "integer" }
     }

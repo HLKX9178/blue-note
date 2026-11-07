@@ -1,4 +1,4 @@
--- hannote 角色表（PostgreSQL）
+-- bluenote 角色表（PostgreSQL）
 
 CREATE TABLE IF NOT EXISTS t_role (
     id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

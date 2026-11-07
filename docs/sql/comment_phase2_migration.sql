@@ -1,5 +1,5 @@
 -- 评论服务二期增量迁移（PostgreSQL）
--- 属主：hannote-comment；执行前请先备份并在测试环境验证。
+-- 属主：bluenote-comment；执行前请先备份并在测试环境验证。
 
 ALTER TABLE t_comment
     ADD COLUMN IF NOT EXISTS first_reply_comment_id BIGINT NOT NULL DEFAULT 0;

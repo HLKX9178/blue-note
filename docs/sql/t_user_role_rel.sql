@@ -1,4 +1,4 @@
--- hannote 用户角色关联表（PostgreSQL）
+-- bluenote 用户角色关联表（PostgreSQL）
 
 CREATE TABLE IF NOT EXISTS t_user_role_rel (
     id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

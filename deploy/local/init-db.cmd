@@ -5,13 +5,13 @@ REM so running this twice will hit unique-key errors.
 chcp 65001 >nul
 cd /d "%~dp0..\.."
 
-echo initializing hannote schema + seed data ...
-docker compose -f podman-compose.yml exec -T postgres psql -U hannote -d hannote -f /schema/init.sql
+echo initializing bluenote schema + seed data ...
+docker compose -f podman-compose.yml exec -T postgres psql -U bluenote -d bluenote -f /schema/init.sql
 if errorlevel 1 goto :fail
 
 echo.
 echo done. verify:
-docker compose -f podman-compose.yml exec -T postgres psql -U hannote -d hannote -c "\dt"
+docker compose -f podman-compose.yml exec -T postgres psql -U bluenote -d bluenote -c "\dt"
 goto :eof
 
 :fail

@@ -26,7 +26,7 @@ git clone --depth 1 --branch "${REDIS_ROARING_VERSION}" \
 cd /tmp/redis-roaring
 
 # Upstream's configure.sh also builds a complete Redis server for its dist
-# bundle. Hannote only needs the module, so generate CRoaring's amalgamated
+# bundle. Bluenote only needs the module, so generate CRoaring's amalgamated
 # headers and build the dedicated CMake target.
 (
   cd src

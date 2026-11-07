@@ -1,4 +1,4 @@
--- hannote 权限表（PostgreSQL）
+-- bluenote 权限表（PostgreSQL）
 
 CREATE TABLE IF NOT EXISTS t_permission (
     id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

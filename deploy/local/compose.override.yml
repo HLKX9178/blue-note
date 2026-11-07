@@ -1,7 +1,7 @@
 # 本地端口覆盖，配合 podman-compose.yml 使用：
 #   docker compose -f podman-compose.yml -f deploy/local/compose.override.yml up -d postgres nacos
 #
-# 原因：compose 里 Nacos 控制台默认占用宿主机 8080，与 hannote-auth 的 8080 冲突，
+# 原因：compose 里 Nacos 控制台默认占用宿主机 8080，与 bluenote-auth 的 8080 冲突，
 # 后启动的一方会 "Port is already allocated" 直接失败。这里把控制台挪到 18080，
 # 8848/9848/9849 保持不变（服务注册与 gRPC 走这三个端口，不能改）。
 services:

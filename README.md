@@ -1,4 +1,4 @@
-# Hannote
+# Bluenote
 
 基于 Spring Cloud Alibaba 的微服务架构练习项目 —— 内容社交平台，支持用户注册登录、发布图文/视频笔记、点赞收藏、关注粉丝、评论互动、全文搜索等核心功能。
 
@@ -26,7 +26,7 @@
 ## 项目结构
 
 ```
-hannote/
+bluenote/
 ├── pom.xml                            # 根 POM (多模块聚合)
 ├── docs/
 │   └── sql/                           # 数据库 DDL 脚本 (21 个)
@@ -34,38 +34,38 @@ hannote/
 ├── scripts/es-index/                  # ES 索引构建脚本
 ├── .github/workflows/                 # CI/CD (Docker 构建推送 + Qodana)
 │
-├── hannote-framework/                 # 基础设施层 (聚合模块)
-│   ├── hannote-common/                # 公共组件: Response, BizException, JsonUtils
-│   ├── hannote-spring-boot-starter-biz-operationlog/  # 操作日志 AOP
-│   ├── hannote-spring-boot-starter-biz-context/       # 用户上下文 (TTL)
-│   └── hannote-spring-boot-starter-rpc/               # HTTP Interface RPC + 用户ID透传
+├── bluenote-framework/                 # 基础设施层 (聚合模块)
+│   ├── bluenote-common/                # 公共组件: Response, BizException, JsonUtils
+│   ├── bluenote-spring-boot-starter-biz-operationlog/  # 操作日志 AOP
+│   ├── bluenote-spring-boot-starter-biz-context/       # 用户上下文 (TTL)
+│   └── bluenote-spring-boot-starter-rpc/               # HTTP Interface RPC + 用户ID透传
 │
-├── hannote-gateway/                   # API 网关 (端口 8000)
-├── hannote-auth/                      # 认证服务 (端口 8080)
-├── hannote-user/                      # 用户服务 (端口 8082)
-├── hannote-oss/                       # 对象存储服务 (端口 8081)
-├── hannote-note/                      # 笔记服务 (端口 8085)
-├── hannote-comment/                   # 评论服务
-├── hannote-user-relation/             # 用户关系服务
-├── hannote-count/                     # 计数服务 (内网 RPC)
-├── hannote-search/                    # 搜索服务 (ES 全文搜索)
-├── hannote-kv/                        # KV 存储服务 (笔记/评论正文, ScyllaDB)
-├── hannote-distributed-id-generator/  # 分布式 ID 服务
-├── hannote-data-align/               # 数据对齐服务 (PowerJob 定时任务)
-└── hannote-test-console/             # 本地前端测试控制台
+├── bluenote-gateway/                   # API 网关 (端口 8000)
+├── bluenote-auth/                      # 认证服务 (端口 8080)
+├── bluenote-user/                      # 用户服务 (端口 8082)
+├── bluenote-oss/                       # 对象存储服务 (端口 8081)
+├── bluenote-note/                      # 笔记服务 (端口 8085)
+├── bluenote-comment/                   # 评论服务
+├── bluenote-user-relation/             # 用户关系服务
+├── bluenote-count/                     # 计数服务 (内网 RPC)
+├── bluenote-search/                    # 搜索服务 (ES 全文搜索)
+├── bluenote-kv/                        # KV 存储服务 (笔记/评论正文, ScyllaDB)
+├── bluenote-distributed-id-generator/  # 分布式 ID 服务
+├── bluenote-data-align/               # 数据对齐服务 (PowerJob 定时任务)
+└── bluenote-test-console/             # 本地前端测试控制台
 ```
 
 ## 微服务架构
 
 ```
-Client → hannote-gateway (8000) ──→ hannote-auth (8080)
-                              ├──→ hannote-user (8082)
-                              ├──→ hannote-oss (8081)
-                              ├──→ hannote-note (8085)
-                              ├──→ hannote-comment
-                              └──→ hannote-user-relation
+Client → bluenote-gateway (8000) ──→ bluenote-auth (8080)
+                              ├──→ bluenote-user (8082)
+                              ├──→ bluenote-oss (8081)
+                              ├──→ bluenote-note (8085)
+                              ├──→ bluenote-comment
+                              └──→ bluenote-user-relation
 
-内网 RPC: hannote-count | hannote-search | hannote-kv | hannote-distributed-id-generator
+内网 RPC: bluenote-count | bluenote-search | bluenote-kv | bluenote-distributed-id-generator
 异步消息: RocketMQ 解耦各服务间通信
 ```
 
@@ -73,19 +73,19 @@ Client → hannote-gateway (8000) ──→ hannote-auth (8080)
 
 | 路径 | 服务 | 说明 |
 |------|------|------|
-| `/auth/**` | hannote-auth | 登录/注册/改密/登出 |
-| `/oss/**` | hannote-oss | 文件上传 |
-| `/user/**` | hannote-user | 用户资料 |
-| `/note/**` | hannote-note | 笔记发布/点赞/收藏 |
-| `/relation/**` | hannote-user-relation | 关注/取关 |
-| `/comment/**` | hannote-comment | 评论互动 |
+| `/auth/**` | bluenote-auth | 登录/注册/改密/登出 |
+| `/oss/**` | bluenote-oss | 文件上传 |
+| `/user/**` | bluenote-user | 用户资料 |
+| `/note/**` | bluenote-note | 笔记发布/点赞/收藏 |
+| `/relation/**` | bluenote-user-relation | 关注/取关 |
+| `/comment/**` | bluenote-comment | 评论互动 |
 
 ## 快速开始
 
 ### 前置依赖
 
 - **Nacos** (服务注册中心)
-- **PostgreSQL 16** (数据库 `hannote`, 执行 `docs/sql/` 下的 DDL)
+- **PostgreSQL 16** (数据库 `bluenote`, 执行 `docs/sql/` 下的 DDL)
 - **Redis** (需安装 `redis-roaring` 模块)
 - **RocketMQ 5.x** (NameServer + Broker)
 - **Elasticsearch 9.4.3** (安装 `analysis-ik` 分词插件)
@@ -114,17 +114,17 @@ podman-compose -f podman-compose.yml up -d
 mvn clean package -DskipTests
 
 # 编译指定模块
-mvn clean package -pl hannote-gateway -DskipTests
+mvn clean package -pl bluenote-gateway -DskipTests
 
 # 启动单个服务
-mvn spring-boot:run -pl hannote-auth
+mvn spring-boot:run -pl bluenote-auth
 ```
 
 ### Docker 构建
 
 ```bash
-docker build -t hannote-gateway -f hannote-gateway/Dockerfile .
-docker build -t hannote-auth -f hannote-auth/Dockerfile .
+docker build -t bluenote-gateway -f bluenote-gateway/Dockerfile .
+docker build -t bluenote-auth -f bluenote-auth/Dockerfile .
 ```
 
 ### ES 索引初始化
@@ -148,16 +148,16 @@ cd scripts/es-index
 
 | 模块 | README | 详细设计 |
 |------|--------|----------|
-| hannote-framework（含 4 个公共 starter） | [README](hannote-framework/README.md) | [DESIGN](hannote-framework/DESIGN.md) |
-| hannote-gateway 网关 | [README](hannote-gateway/README.md) | [DESIGN](hannote-gateway/DESIGN.md) |
-| hannote-auth 认证 | [README](hannote-auth/README.md) | [DESIGN](hannote-auth/DESIGN.md) |
-| hannote-user 用户 | [README](hannote-user/README.md) | [DESIGN](hannote-user/DESIGN.md) |
-| hannote-oss 对象存储 | [README](hannote-oss/README.md) | [DESIGN](hannote-oss/DESIGN.md) |
-| hannote-note 笔记 | [README](hannote-note/README.md) | [DESIGN](hannote-note/hannote-note-biz/DESIGN.md) |
-| hannote-comment 评论 | [README](hannote-comment/README.md) | [DESIGN](hannote-comment/DESIGN.md) |
-| hannote-user-relation 用户关系 | [README](hannote-user-relation/README.md) | [DESIGN](hannote-user-relation/DESIGN.md) |
-| hannote-count 计数 | [README](hannote-count/README.md) | [DESIGN](hannote-count/DESIGN.md) |
-| hannote-search 搜索 | [README](hannote-search/README.md) | [DESIGN](hannote-search/DESIGN.md) |
-| hannote-kv KV 存储 | [README](hannote-kv/README.md) | [DESIGN](hannote-kv/DESIGN.md) |
-| hannote-distributed-id-generator 分布式 ID | [README](hannote-distributed-id-generator/README.md) | [DESIGN](hannote-distributed-id-generator/DESIGN.md) |
-| hannote-data-align 数据对齐 | [README](hannote-data-align/README.md) | [DESIGN](hannote-data-align/DESIGN.md) |
+| bluenote-framework（含 4 个公共 starter） | [README](bluenote-framework/README.md) | [DESIGN](bluenote-framework/DESIGN.md) |
+| bluenote-gateway 网关 | [README](bluenote-gateway/README.md) | [DESIGN](bluenote-gateway/DESIGN.md) |
+| bluenote-auth 认证 | [README](bluenote-auth/README.md) | [DESIGN](bluenote-auth/DESIGN.md) |
+| bluenote-user 用户 | [README](bluenote-user/README.md) | [DESIGN](bluenote-user/DESIGN.md) |
+| bluenote-oss 对象存储 | [README](bluenote-oss/README.md) | [DESIGN](bluenote-oss/DESIGN.md) |
+| bluenote-note 笔记 | [README](bluenote-note/README.md) | [DESIGN](bluenote-note/bluenote-note-biz/DESIGN.md) |
+| bluenote-comment 评论 | [README](bluenote-comment/README.md) | [DESIGN](bluenote-comment/DESIGN.md) |
+| bluenote-user-relation 用户关系 | [README](bluenote-user-relation/README.md) | [DESIGN](bluenote-user-relation/DESIGN.md) |
+| bluenote-count 计数 | [README](bluenote-count/README.md) | [DESIGN](bluenote-count/DESIGN.md) |
+| bluenote-search 搜索 | [README](bluenote-search/README.md) | [DESIGN](bluenote-search/DESIGN.md) |
+| bluenote-kv KV 存储 | [README](bluenote-kv/README.md) | [DESIGN](bluenote-kv/DESIGN.md) |
+| bluenote-distributed-id-generator 分布式 ID | [README](bluenote-distributed-id-generator/README.md) | [DESIGN](bluenote-distributed-id-generator/DESIGN.md) |
+| bluenote-data-align 数据对齐 | [README](bluenote-data-align/README.md) | [DESIGN](bluenote-data-align/DESIGN.md) |

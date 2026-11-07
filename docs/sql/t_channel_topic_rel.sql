@@ -1,5 +1,5 @@
--- hannote 频道-话题关联表（PostgreSQL）
--- 在数据库 hannote 中执行
+-- bluenote 频道-话题关联表（PostgreSQL）
+-- 在数据库 bluenote 中执行
 -- 该表没有 is_deleted 字段：关系记录不做逻辑删除，要解除关系直接物理删除。
 
 CREATE TABLE IF NOT EXISTS t_channel_topic_rel (

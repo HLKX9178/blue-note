@@ -1,6 +1,6 @@
 /*
  * ============================================================================
- * hannote-data-align —— PowerJob 10 个任务「一键导入」浏览器脚本
+ * bluenote-data-align —— PowerJob 10 个任务「一键导入」浏览器脚本
  * ----------------------------------------------------------------------------
  * 背景：PowerJob 5.1.2 开源版控制台的「导入」只支持「一次粘贴一个任务 JSON」，
  *       且导入时不会自动补 appId（服务端 /job/save 直接校验 body 里的 appId、
@@ -9,7 +9,7 @@
  *
  * 用法：
  *   1. 浏览器打开 powerjob-server 控制台（如 http://localhost:7700），
- *      登录后在左上角把当前应用切到 hannote-data-align（很重要，脚本读取当前 appId）。
+ *      登录后在左上角把当前应用切到 bluenote-data-align（很重要，脚本读取当前 appId）。
  *   2. 打开浏览器开发者工具 → Console 面板。
  *   3. 整段复制本文件内容，粘贴到 Console，回车执行。
  *   4. 看输出：每个任务打印「✅ 已创建」或「❌ 失败」。刷新任务管理页即可看到 10 个任务。
@@ -26,11 +26,11 @@
   const appId = window.localStorage.getItem('Power_appId');
   const jwt = window.localStorage.getItem('PowerJwt');
   if (!appId) {
-    console.error('❌ 没读到 Power_appId：请先在控制台左上角选中 hannote-data-align 应用再执行。');
+    console.error('❌ 没读到 Power_appId：请先在控制台左上角选中 bluenote-data-align 应用再执行。');
     return;
   }
 
-  // 8 个对齐任务（MapReduce）+ 2 个建/删表任务（单机），处理器全限定类名见 hannote-data-align。
+  // 8 个对齐任务（MapReduce）+ 2 个建/删表任务（单机），处理器全限定类名见 bluenote-data-align。
   const ALIGN = [
     ['数据对齐-关注数',     'FollowingCountAlignProcessor',    '按分片重算 t_user_count.following_total 并同步 Redis'],
     ['数据对齐-粉丝数',     'FansCountAlignProcessor',         '按分片重算 t_user_count.fans_total 并同步 Redis'],
@@ -68,7 +68,7 @@
       jobName: '数据对齐-创建日增量表',
       jobDescription: '每日创建次日的 8×shards 张临时表',
       executeType: 'STANDALONE',
-      processorInfo: 'com.hanserwei.dataalign.processor.CreateDailyTableProcessor',
+      processorInfo: 'com.han.dataalign.processor.CreateDailyTableProcessor',
       timeExpression: '0 0 23 * * ?',
     },
     {
@@ -76,7 +76,7 @@
       jobName: '数据对齐-删除历史日增量表',
       jobDescription: '清理上个月（不含今日）的历史临时表',
       executeType: 'STANDALONE',
-      processorInfo: 'com.hanserwei.dataalign.processor.DeleteExpiredTableProcessor',
+      processorInfo: 'com.han.dataalign.processor.DeleteExpiredTableProcessor',
       timeExpression: '0 30 23 * * ?',
     },
     ...ALIGN.map(([name, cls, desc]) => ({
@@ -84,7 +84,7 @@
       jobName: name,
       jobDescription: desc,
       executeType: 'MAP_REDUCE',
-      processorInfo: 'com.hanserwei.dataalign.processor.' + cls,
+      processorInfo: 'com.han.dataalign.processor.' + cls,
       timeExpression: '0 0 3 * * ?',
     })),
   ];

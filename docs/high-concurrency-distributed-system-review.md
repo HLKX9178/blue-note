@@ -1,4 +1,4 @@
-# Hannote 高并发分布式系统项目审阅报告
+# Bluenote 高并发分布式系统项目审阅报告
 
 ## 1. 审阅结论
 
@@ -50,7 +50,7 @@
 
 ### 3.1 敏感信息会直接写入日志
 
-[操作日志切面](../hannote-framework/hannote-spring-boot-starter-biz-operationlog/src/main/java/com/hanserwei/framework/biz/operationlog/aspect/ApiOperationLogAspect.java)会完整记录请求参数和响应；[认证接口](../hannote-auth/src/main/java/com/hanserwei/auth/controller/AuthController.java)又标注了该切面，因此以下信息都可能写入日志：
+[操作日志切面](../bluenote-framework/bluenote-spring-boot-starter-biz-operationlog/src/main/java/com/han/framework/biz/operationlog/aspect/ApiOperationLogAspect.java)会完整记录请求参数和响应；[认证接口](../bluenote-auth/src/main/java/com/han/auth/controller/AuthController.java)又标注了该切面，因此以下信息都可能写入日志：
 
 - 明文密码；
 - 短信验证码；
@@ -58,7 +58,7 @@
 - 登录成功返回的 JWT；
 - 修改密码请求中的新密码。
 
-[验证码服务](../hannote-auth/src/main/java/com/hanserwei/auth/service/impl/VerificationCodeServiceImpl.java)还直接打印手机号和完整验证码。
+[验证码服务](../bluenote-auth/src/main/java/com/han/auth/service/impl/VerificationCodeServiceImpl.java)还直接打印手机号和完整验证码。
 
 #### 建议
 
@@ -70,9 +70,9 @@
 
 ### 3.2 “内网 RPC”接口实际上可通过公网网关调用
 
-网关把整个 `/user/**` 都转发给用户服务，[角色规则](../hannote-gateway/src/main/java/com/hanserwei/gateway/auth/PathAuthorizationRules.java)还是空的。
+网关把整个 `/user/**` 都转发给用户服务，[角色规则](../bluenote-gateway/src/main/java/com/han/gateway/auth/PathAuthorizationRules.java)还是空的。
 
-[用户 Controller](../hannote-user/hannote-user-biz/src/main/java/com/hanserwei/user/controller/UserController.java)同时包含公共接口和“仅内网 RPC”接口，包括：
+[用户 Controller](../bluenote-user/bluenote-user-biz/src/main/java/com/han/user/controller/UserController.java)同时包含公共接口和“仅内网 RPC”接口，包括：
 
 - `/user/register`；
 - `/user/findByPhone`；
@@ -94,9 +94,9 @@
 
 ### 3.3 “仅自己可见”存在隐私泄漏路径
 
-[修改可见性逻辑](../hannote-note/hannote-note-biz/src/main/java/com/hanserwei/note/service/impl/NoteServiceImpl.java)只删除笔记详情缓存，没有清理作者主页的已发布笔记列表缓存。
+[修改可见性逻辑](../bluenote-note/bluenote-note-biz/src/main/java/com/han/note/service/impl/NoteServiceImpl.java)只删除笔记详情缓存，没有清理作者主页的已发布笔记列表缓存。
 
-同时，[点赞、收藏、评论使用的查询](../hannote-note/hannote-note-biz/src/main/resources/mapper/NoteDOMapper.xml)只检查 `status=1`，没有检查 `visible` 和当前访问者。
+同时，[点赞、收藏、评论使用的查询](../bluenote-note/bluenote-note-biz/src/main/resources/mapper/NoteDOMapper.xml)只检查 `status=1`，没有检查 `visible` 和当前访问者。
 
 可能造成：
 
@@ -118,7 +118,7 @@
 
 ### 3.4 被禁用账号仍然可以重新登录
 
-[用户表](../docs/sql/t_user.sql)已经有 `status` 字段，但认证 DTO 不返回状态，[登录流程](../hannote-auth/src/main/java/com/hanserwei/auth/service/impl/AuthServiceImpl.java)也没有校验账号是否禁用或删除。
+[用户表](../docs/sql/t_user.sql)已经有 `status` 字段，但认证 DTO 不返回状态，[登录流程](../bluenote-auth/src/main/java/com/han/auth/service/impl/AuthServiceImpl.java)也没有校验账号是否禁用或删除。
 
 当前 JWT 默认有效期为 30 天，账号禁用、角色变更或密码修改后，旧 Token 仍可能继续使用。
 
@@ -133,7 +133,7 @@
 
 ### 3.5 点赞、收藏存在 Redis 成功但 MQ 永久丢失的问题
 
-[点赞和收藏流程](../hannote-note/hannote-note-biz/src/main/java/com/hanserwei/note/service/impl/NoteServiceImpl.java)先修改 Redis Bitmap/ZSet，再异步发送 RocketMQ。
+[点赞和收藏流程](../bluenote-note/bluenote-note-biz/src/main/java/com/han/note/service/impl/NoteServiceImpl.java)先修改 Redis Bitmap/ZSet，再异步发送 RocketMQ。
 
 如果 MQ 发送失败：
 
@@ -155,7 +155,7 @@
 
 ### 3.6 关注、取关存在相同的双写问题
 
-[关系服务](../hannote-user-relation/hannote-user-relation-biz/src/main/java/com/hanserwei/relation/service/impl/RelationServiceImpl.java)先修改 Redis ZSet，再同步发送 MQ。
+[关系服务](../bluenote-user-relation/bluenote-user-relation-biz/src/main/java/com/han/relation/service/impl/RelationServiceImpl.java)先修改 Redis ZSet，再同步发送 MQ。
 
 如果 Redis 修改成功但 MQ 发送失败：
 
@@ -174,7 +174,7 @@
 
 ### 3.7 计数服务在 MQ 确认前没有完成持久化
 
-[点赞计数消费者](../hannote-count/hannote-count-biz/src/main/java/com/hanserwei/count/consumer/CountNoteLikeConsumer.java)收到消息后只将消息放入进程内无界 Reactor 缓冲，监听方法随即返回，相当于 RocketMQ 源消息已经 ACK。
+[点赞计数消费者](../bluenote-count/bluenote-count-biz/src/main/java/com/han/count/consumer/CountNoteLikeConsumer.java)收到消息后只将消息放入进程内无界 Reactor 缓冲，监听方法随即返回，相当于 RocketMQ 源消息已经 ACK。
 
 风险包括：
 
@@ -198,7 +198,7 @@
 
 ### 3.8 数据对齐服务有三类事件订阅已经断开
 
-[data-align MQ 常量](../hannote-data-align/src/main/java/com/hanserwei/dataalign/constant/MQConstants.java)仍订阅：
+[data-align MQ 常量](../bluenote-data-align/src/main/java/com/han/dataalign/constant/MQConstants.java)仍订阅：
 
 - `CountNoteLikeTopic`；
 - `CountNoteCollectTopic`；
@@ -224,7 +224,7 @@
 
 ### 3.9 笔记跨 PostgreSQL/ScyllaDB 更新不具备原子性
 
-[笔记更新逻辑](../hannote-note/hannote-note-biz/src/main/java/com/hanserwei/note/service/impl/NoteServiceImpl.java)先更新 PG 事务中的元数据，再同步覆盖或删除 KV 正文。
+[笔记更新逻辑](../bluenote-note/bluenote-note-biz/src/main/java/com/han/note/service/impl/NoteServiceImpl.java)先更新 PG 事务中的元数据，再同步覆盖或删除 KV 正文。
 
 如果 KV 成功后 PG 提交失败：
 
@@ -284,7 +284,7 @@
 
 ### 3.12 请求约束与 RocketMQ 消息大小不一致
 
-[发布笔记 DTO](../hannote-note/hannote-note-biz/src/main/java/com/hanserwei/note/model/vo/PublishNoteReqVO.java)几乎没有标题、正文、URL 长度约束，但[生产配置](../hannote-note/hannote-note-biz/src/main/resources/application-prod.yml)将 RocketMQ 最大消息设置为 4096 字节，同时完整正文会进入事务消息。
+[发布笔记 DTO](../bluenote-note/bluenote-note-biz/src/main/java/com/han/note/model/vo/PublishNoteReqVO.java)几乎没有标题、正文、URL 长度约束，但[生产配置](../bluenote-note/bluenote-note-biz/src/main/resources/application-prod.yml)将 RocketMQ 最大消息设置为 4096 字节，同时完整正文会进入事务消息。
 
 这会导致普通长正文也可能在 MQ 或数据库阶段失败，并且错误发生得过晚。
 
@@ -302,7 +302,7 @@
 
 ### 4.1 首页推荐流和关注流
 
-目前唯一的多笔记接口是按作者查询主页笔记，[SQL](../hannote-note/hannote-note-biz/src/main/resources/mapper/NoteDOMapper.xml)也是按 `creatorId` 查询。系统没有真正的首页内容消费入口。
+目前唯一的多笔记接口是按作者查询主页笔记，[SQL](../bluenote-note/bluenote-note-biz/src/main/resources/mapper/NoteDOMapper.xml)也是按 `creatorId` 查询。系统没有真正的首页内容消费入口。
 
 #### 建议分阶段建设
 
@@ -490,7 +490,7 @@
 
 ### 5.2 RPC 超时、熔断、隔离和降级
 
-[RPC Starter](../hannote-framework/hannote-spring-boot-starter-rpc/src/main/java/com/hanserwei/framework/rpc/config/LoadBalancedRestClientConfigurer.java)主要配置了负载均衡和身份透传，没有连接、读取、总超时、熔断和隔离。
+[RPC Starter](../bluenote-framework/bluenote-spring-boot-starter-rpc/src/main/java/com/han/framework/rpc/config/LoadBalancedRestClientConfigurer.java)主要配置了负载均衡和身份透传，没有连接、读取、总超时、熔断和隔离。
 
 #### 建议
 
@@ -765,7 +765,7 @@ HTTP Interface 能提供编译期复用，但不能约束独立部署和 MQ 事�
 当前存在一些文档和实现漂移：
 
 - `RelationServiceImpl` 仍将粉丝列表的 `fansTotal/noteTotal` 固定为 0，但 count 服务已经存在；
-- README 中列出的 `hannote-test-console` 实际不存在；
+- README 中列出的 `bluenote-test-console` 实际不存在；
 - 部分 DESIGN 描述的 Topic 已经与当前实现不一致；
 - 个别注释仍描述“计数服务尚未建设”。
 
@@ -829,7 +829,7 @@ HTTP Interface 能提供编译期复用，但不能约束独立部署和 MQ 事�
 
 ## 8. 最终判断
 
-当前 Hannote 已经具备一个较完整的内容社交微服务练习项目基础，尤其在以下方面有较好的实践：
+当前 Bluenote 已经具备一个较完整的内容社交微服务练习项目基础，尤其在以下方面有较好的实践：
 
 - 多级缓存；
 - RocketMQ 顺序消息和事务消息；

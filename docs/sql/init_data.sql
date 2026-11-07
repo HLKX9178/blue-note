@@ -1,4 +1,4 @@
--- hannote RBAC 初始化数据（PostgreSQL）
+-- bluenote RBAC 初始化数据（PostgreSQL）
 -- 在 t_role / t_permission / t_role_permission_rel 表创建后执行
 
 -- 普通用户角色（ID 由 IDENTITY 自增产生，这里显式指定以便关联表引用）

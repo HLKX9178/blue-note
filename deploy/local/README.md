@@ -1,6 +1,6 @@
 # 本地中间件（Podman Compose）
 
-根目录的 `podman-compose.yml` 只负责运行 Hannote 所需的 10 个中间件，并保留内存限制、健康检查和数据卷。建表、插件、namespace、索引和 bucket 均由开发者在首次部署时手工初始化。
+根目录的 `podman-compose.yml` 只负责运行 Bluenote 所需的 10 个中间件，并保留内存限制、健康检查和数据卷。建表、插件、namespace、索引和 bucket 均由开发者在首次部署时手工初始化。
 
 ## 首次部署
 
@@ -16,10 +16,10 @@ sudo sysctl -w vm.overcommit_memory=1
 Redis Stack 自带 RedisBloom，但不包含 `redis-roaring`。首次部署执行一次：
 
 ```bash
-podman volume create hannote_redis_modules
+podman volume create bluenote_redis_modules
 podman run --rm --network host --memory 512m --cpus 1 \
   -e REDIS_ROARING_VERSION=v1.7.4 \
-  -v hannote_redis_modules:/modules \
+  -v bluenote_redis_modules:/modules \
   -v "$PWD/deploy/local/redis/build-roaring.sh:/init/build-roaring.sh:ro,Z" \
   docker.io/library/debian:bookworm-slim \
   /bin/sh /init/build-roaring.sh
@@ -28,10 +28,10 @@ podman run --rm --network host --memory 512m --cpus 1 \
 ### 3. 安装 Elasticsearch IK 插件
 
 ```bash
-podman volume create hannote_elasticsearch_plugins
+podman volume create bluenote_elasticsearch_plugins
 podman run --rm --user 1000:0 --memory 256m \
   -e ES_JAVA_OPTS="-Xms64m -Xmx128m" \
-  -v hannote_elasticsearch_plugins:/usr/share/elasticsearch/plugins:U \
+  -v bluenote_elasticsearch_plugins:/usr/share/elasticsearch/plugins:U \
   --entrypoint /bin/sh \
   docker.elastic.co/elasticsearch/elasticsearch:9.4.3 \
   -c 'bin/elasticsearch-plugin install --batch https://get.infini.cloud/elasticsearch/analysis-ik/9.4.3'
@@ -54,9 +54,9 @@ PowerJob Server 固定使用 Compose 网络地址 `10.90.20.10`，避免容器�
 以下命令只需要在空数据卷上执行一次：
 
 ```bash
-# Hannote PostgreSQL 表和种子数据
+# Bluenote PostgreSQL 表和种子数据
 podman-compose -f podman-compose.yml exec postgres \
-  psql -U hannote -d hannote -f /schema/init.sql
+  psql -U bluenote -d bluenote -f /schema/init.sql
 
 # PowerJob 5.1.2 表结构；导入完成后重启 Server
 podman-compose -f podman-compose.yml exec powerjob-mysql sh -c \
@@ -69,10 +69,10 @@ podman-compose -f podman-compose.yml exec scylla sh -c \
   -f /schema/create-keyspace.cql"
 podman-compose -f podman-compose.yml exec scylla sh -c \
   "node_ip=\$(hostname -i | cut -d' ' -f1); cqlsh \"\$node_ip\" 9042 \
-  -k hannote -f /schema/note_content.cql"
+  -k bluenote -f /schema/note_content.cql"
 podman-compose -f podman-compose.yml exec scylla sh -c \
   "node_ip=\$(hostname -i | cut -d' ' -f1); cqlsh \"\$node_ip\" 9042 \
-  -k hannote -f /schema/comment_content.cql"
+  -k bluenote -f /schema/comment_content.cql"
 
 # Elasticsearch note/user 索引
 ES_URL=http://127.0.0.1:9200 ./scripts/es-index/create-indices.sh
@@ -80,8 +80,8 @@ ES_URL=http://127.0.0.1:9200 ./scripts/es-index/create-indices.sh
 
 另外在控制台完成两项操作：
 
-- Nacos `http://<服务器IP>:8080`：创建 namespace `hannote`。
-- RustFS `http://<服务器IP>:9001`：创建 bucket `hannote`。
+- Nacos `http://<服务器IP>:8080`：创建 namespace `bluenote`。
+- RustFS `http://<服务器IP>:9001`：创建 bucket `bluenote`。
 
 PowerJob 的应用和任务按 [PowerJob 配置指南](../../docs/powerjob-data-align-console-setup.md) 创建。若客户端不在中间件服务器上，还需在 `deploy/local/rocketmq/broker.conf` 中添加 `brokerIP1=<服务器IP>`。
 
@@ -103,12 +103,12 @@ podman-compose -f podman-compose.yml down -v
 | 中间件 | 默认端口 | 本地默认凭据/说明 |
 |---|---:|---|
 | Nacos Console / Server | `8080` / `8848` | Server 3.1.1；本地关闭鉴权 |
-| PostgreSQL | `5432` | `hannote` / `hannote`，数据库 `hannote` |
-| Redis | `6379` | 密码 `hannote-redis` |
+| PostgreSQL | `5432` | `bluenote` / `bluenote`，数据库 `bluenote` |
+| Redis | `6379` | 密码 `bluenote-redis` |
 | RocketMQ | `9876` / `10911` | NameServer / Broker |
 | Elasticsearch | `9200` | 无鉴权 |
 | ScyllaDB | `9042` | datacenter `datacenter1` |
-| RustFS | `9000` / `9001` | S3 / Console；`hannoteadmin` / `hannote-local-secret` |
+| RustFS | `9000` / `9001` | S3 / Console；`bluenoteadmin` / `bluenote-local-secret` |
 | PowerJob MySQL | `3306` | `root` / `powerjob-local` |
 | PowerJob Server | `7700` | 5.1.2 首次启动无默认控制台用户，需在登录页注册 |
 
